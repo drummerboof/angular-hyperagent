@@ -120,6 +120,7 @@ angular.module('hyperagent', []);
             _.each(object, angular.bind(this, function (obj, key) {
                 if (curies.canExpand(key)) {
                     var expanded = curies.expand(key);
+
                     if (Array.isArray(obj)) {
                         this._setLazyArray(expanded, obj, false);
                     } else {
@@ -316,7 +317,6 @@ angular.module('hyperagent', []);
         if (params) {
             _link.expand(params);
         }
-
 
         return _link;
     };
