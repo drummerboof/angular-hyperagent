@@ -1,23 +1,23 @@
 {
-  "name": "angular-hyperagent",
-  "version": "0.1.0",
-  "dependencies": {
-    "uri.js": "~1.11.0",
-    "lodash": "~2.4.1"
-  },
-  "devDependencies": {
-    "angular": "~1.2.16",
-    "angular-mocks": "~1.2.16"
-  },
-  "ignore": [
-    ".gitignore",
-    ".travis.yml",
-    "Gruntfile.js",
-    "karma*.js",
-    "src/",
-    "sample/",
-    "test/",
-    "dist/*.min.js",
-    "package.json"
-  ]
+    "name": "angular-hyperagent",
+    "main": "dist/angular-hyperagent.js",
+    "version": "0.1.0",
+    "dependencies": {
+        "uri.js": "~1.11.0",
+        "lodash": "~2.4.1"
+    },
+    "devDependencies": {
+        "angular": "~1.2.16",
+        "angular-mocks": "~1.2.16"
+    },
+    "ignore": [
+        ".gitignore",
+        ".travis.yml",
+        "Gruntfile.js",
+        "karma*.js",
+        "src/",
+        "sample/",
+        "test/",
+        "package.json"
+    ]
 }
