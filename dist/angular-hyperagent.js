@@ -175,6 +175,8 @@ angular.module('hyperagent', []);
             'X-Requested-With': 'XMLHttpRequest'
         });
 
+        httpOptions.method = httpOptions.method || 'GET';
+
         return $http(httpOptions);
     }
 

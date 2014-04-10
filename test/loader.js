@@ -3,9 +3,17 @@
 describe('hyperLoader', function () {
 
     var hyperLoader,
-        $httpBackend;
+        $httpBackend,
+        $httpSpy;
 
     beforeEach(module('hyperagent'));
+
+    beforeEach(module(function ($provide) {
+        $httpSpy = jasmine.createSpy('$httpSpy');
+        $provide.decorator('$http', function ($delegate) {
+            return $httpSpy.and.callFake($delegate);
+        });
+    }));
 
     beforeEach(inject(function (_hyperLoader_, _$httpBackend_) {
         hyperLoader = _hyperLoader_;
@@ -27,6 +35,19 @@ describe('hyperLoader', function () {
         });
 
         $httpBackend.flush();
+    });
+
+    it('should default method to GET', function () {
+
+        hyperLoader({
+            url: '/test',
+            headers: {
+                test: 'value'
+            }
+        });
+        console.log($httpSpy.calls.argsFor(0));
+
+        expect($httpSpy.calls.argsFor(0)[0].method).toBe('GET');
     });
 
 });

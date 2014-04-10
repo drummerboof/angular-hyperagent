@@ -8,6 +8,8 @@ angular.module('hyperagent').factory('hyperLoader', ['$q', '$http', function ($q
             'X-Requested-With': 'XMLHttpRequest'
         });
 
+        httpOptions.method = httpOptions.method || 'GET';
+
         return $http(httpOptions);
     }
 

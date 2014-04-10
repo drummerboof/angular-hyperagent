@@ -39,7 +39,8 @@ describe('Hyperagent Integration Test', function () {
                 headers: {
                     'Accept': 'application/hal+json, application/json, */*; q=0.01',
                     'X-Requested-With': 'XMLHttpRequest'
-                }
+                },
+                method: 'GET'
             });
             done();
         });
