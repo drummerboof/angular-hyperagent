@@ -71,6 +71,10 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
             _.extend(ajaxOptions, options.ajax);
         }
 
+        if (this.method) {
+            ajaxOptions.method = this.method;
+        }
+
         return hyperLoader(ajaxOptions).then(angular.bind(this, function _ajaxThen(response) {
             this._load(response.data);
             this.loaded = true;
@@ -213,6 +217,7 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
         // Store href for later expansion in case it's a templated URI.
         this.href = object.href;
         this.templated = object.templated;
+        this.method = object.method;
 
         // The href is OPTIONAL, even for links.
         if (!this.href) {

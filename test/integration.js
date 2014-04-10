@@ -150,4 +150,19 @@ describe('Hyperagent Integration Test', function () {
 
         $httpBackend.flush();
     });
+
+    it('should use the method specified in a link if given', function () {
+        $httpBackend.expectGET('http://haltalk.herokuapp.com/').respond(fixtures.fullDoc);
+        $httpBackend.expectPOST('http://haltalk.herokuapp.com/something').respond(JSON.stringify({ prop: 'value' }));
+
+        var agent = new HyperResource('http://haltalk.herokuapp.com/');
+
+        agent.fetch().then(function () {
+            return agent.link('ht:do-something').fetch();
+        }).then(function () {
+            expect(agent.link('ht:do-something').props.prop).toBe('value');
+        });
+
+        $httpBackend.flush();
+    });
 });

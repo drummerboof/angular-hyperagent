@@ -23,6 +23,10 @@ angular.module('hyperagent').constant('fixtures', {
             },
             "ht:latest-posts": {
                 "href": "/posts/latest"
+            },
+            "ht:do-something": {
+                "href": "/something",
+                "method": "POST"
             }
         },
         "_embedded": {
