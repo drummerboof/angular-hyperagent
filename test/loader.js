@@ -23,7 +23,6 @@ describe('hyperLoader', function () {
     it('should call $http with the correct arguments', function () {
         $httpBackend.expectGET('/test', {
             'Accept': 'application/hal+json, application/json, */*; q=0.01',
-            'X-Requested-With': 'XMLHttpRequest',
             test: 'value'
         }).respond({});
 

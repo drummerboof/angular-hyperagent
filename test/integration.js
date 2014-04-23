@@ -37,8 +37,7 @@ describe('Hyperagent Integration Test', function () {
             expect($httpSpy).toHaveBeenCalledWith({
                 url: 'https://example.com',
                 headers: {
-                    'Accept': 'application/hal+json, application/json, */*; q=0.01',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Accept': 'application/hal+json, application/json, */*; q=0.01'
                 },
                 method: 'GET'
             });
