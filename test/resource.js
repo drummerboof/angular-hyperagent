@@ -27,6 +27,15 @@ describe('Resource', function () {
         expect(agent.fetch).toBeTruthy();
     });
 
+    it('should refresh', function () {
+        var agent = new HyperResource('http://example.com/'),
+            promise;
+        spyOn(agent, 'fetch').and.returnValue('promise');
+        promise = agent.refresh();
+        expect(promise).toBe('promise');
+        expect(agent.fetch).toHaveBeenCalledWith({ force: true });
+    });
+
     it('should accept options hash', function () {
         var agent = new HyperResource({
             url: 'http://example.com/'

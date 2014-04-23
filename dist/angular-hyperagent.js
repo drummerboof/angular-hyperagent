@@ -305,6 +305,30 @@ angular.module('hyperagent', []);
             return this;
         }));
     };
+    /**
+     * Refresh the resource from server at the resource's URL using the self link
+     * function:
+     *
+     * - headers
+     * - username
+     * - password
+     * - url (not directly set by the user)
+     *
+     * In addition, all options from `options.ajax` of the Resource instance are
+     * mixed in.
+     *
+     * Parameters:
+     * - options:
+     *   - force: defaults to true, whether to force a new request if the result is
+     *   cached, i. e this resource is already marked as `loaded`.
+     *   - ajax: optional hash of options to override the Resource AJAX options.
+     *
+     * Returns a promise on the this Resource instance.
+     */
+    Resource.prototype.refresh = function refresh(options) {
+        options = _.defaults(options || {}, { force: true });
+        return this.fetch(options);
+    };
 
     Resource.prototype.url = function url() {
         return this._options.url;
