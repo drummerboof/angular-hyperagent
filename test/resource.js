@@ -323,4 +323,70 @@ describe('Resource', function () {
             });
         });
     });
+
+    describe('Resource#hasLink', function () {
+
+        var agent,
+            $httpBackend;
+
+        beforeEach(inject(function (_$httpBackend_) {
+            agent = new HyperResource('http://example.com');
+            $httpBackend = _$httpBackend_;
+        }));
+
+        it('should return true if the given link is contained within the resource', function () {
+            agent._load({
+                _links: {
+                    'good-link': { href: 'href' }
+                }
+            });
+
+            expect(agent.hasLink('good-link')).toBe(true);
+            expect(agent.hasLink('bad-link')).toBe(false);
+        });
+    });
+
+    describe('Resource#warnings', function () {
+
+        var agent,
+            $httpBackend;
+
+        beforeEach(inject(function (_$httpBackend_) {
+            agent = new HyperResource('http://example.com');
+            $httpBackend = _$httpBackend_;
+        }));
+
+        it('should return a list of warning keys for a missing link', function () {
+            agent._load({
+                _links: {
+                    'good-link': { href: 'href' }
+                },
+                _warnings: [{
+                    'bad-link': {
+                        badThing: true,
+                        anotherBadThing: false
+                    }
+                }]
+            });
+            expect(agent.linkWarnings('bad-link')).toEqual(['badThing', 'anotherBadThing']);
+        });
+
+        it('should return a default warning if the link is missing but there are no specific warnings', function () {
+            agent._load({
+                _links: {
+                    'good-link': { href: 'href' }
+                }
+            });
+            expect(agent.linkWarnings('another-bad-link')).toEqual(['unknownLinkError']);
+        });
+
+        it('should return an empty array if the link is present', function () {
+            agent._load({
+                _links: {
+                    'good-link': { href: 'href' }
+                }
+            });
+            expect(agent.linkWarnings('good-link')).toEqual([]);
+        });
+    });
 });

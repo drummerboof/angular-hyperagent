@@ -12,7 +12,7 @@ angular.module('hyperagent').factory('HyperProperties', [function () {
         // Overwrite the response object with the original properties if provided.
         _.defaults(response, options.original || {});
 
-        var skipped = ['_links', '_embedded'];
+        var skipped = ['_links', '_embedded', '_warnings'];
         Object.keys(response).forEach(angular.bind(this, function (key) {
             if (!_.contains(skipped, key)) {
                 this[key] = response[key];

@@ -11,13 +11,15 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
         this.props = new HyperProperties({});
         this.embedded = {};
         this.links = {};
+        this.warnings = {};
         this.curies = new HyperCurieStore();
 
         // Set up default loadHooks
         this._loadHooks = [
             this._loadLinks,
             this._loadEmbedded,
-            this._loadProperties
+            this._loadProperties,
+            this._loadWarnings
         ];
         // TODO: loadHooks
 
@@ -130,6 +132,31 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
     };
 
     /**
+     * Return the warnings associated with the given rel name. Warnings are a way to identify
+     * why a given link is not present in the resource.
+     *
+     * @param rel
+     * @returns {Array}
+     */
+    Resource.prototype.linkWarnings = function (rel) {
+        var warnings = [];
+        if (!this.hasLink(rel)) {
+            warnings = _.has(this.warnings, rel) ? _.keys(this.warnings[rel]) : ['unknownLinkError'];
+        }
+        return warnings;
+    };
+
+    /**
+     * Return true if this resource contains the link identified by the given rel. False otherwise
+     *
+     * @param rel
+     * @returns {Boolean}
+     */
+    Resource.prototype.hasLink = function hasLink(rel) {
+        return _.has(this.links, rel);
+    };
+
+    /**
      * Loads the Resource.links resources on creation of the object.
      */
     Resource.prototype._loadLinks = function _loadLinks(object) {
@@ -175,6 +202,18 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
             curies: this.curies,
             original: this.props
         });
+    };
+
+    /**
+     * Loads warnings from the response
+     *
+     * @param object
+     * @private
+     */
+    Resource.prototype._loadWarnings = function _loadWarnings(object) {
+        if (_.has(object, '_warnings')) {
+            this.warnings = _.isArray(object._warnings) ? object._warnings[0] : object._warnings;
+        }
     };
 
     Resource.prototype._load = function _load(object) {
