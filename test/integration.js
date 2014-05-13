@@ -140,11 +140,11 @@ describe('Hyperagent Integration Test', function () {
 
         agent.fetch().then(function () {
             return agent.link('ht:me', { name: 'passy' }).fetch();
-        }).then(function () {
-            expect(agent.link('ht:me', { name: 'passy' }).props.title).toBe('passy');
+        }).then(function (passyResource) {
+            expect(passyResource.props.title).toBe('passy');
             return agent.link('ht:me', { name: 'mike' }).fetch();
-        }).then(function () {
-            expect(agent.link('ht:me', { name: 'mike' }).props.title).toBe('mike');
+        }).then(function (mikeResource) {
+            expect(mikeResource.props.title).toBe('mike');
             done();
         });
 
@@ -159,8 +159,8 @@ describe('Hyperagent Integration Test', function () {
 
         agent.fetch().then(function () {
             return agent.link('ht:do-something').fetch();
-        }).then(function () {
-            expect(agent.link('ht:do-something').props.prop).toBe('value');
+        }).then(function (resource) {
+            expect(resource.props.prop).toBe('value');
         });
 
         $httpBackend.flush();

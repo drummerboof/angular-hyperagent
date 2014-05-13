@@ -86,7 +86,7 @@ angular.module('hyperagent').factory('HyperLazyResource', ['$injector', function
         var instance;
 
         return function () {
-            if (instance === undefined) {
+            if (instance === undefined || options.skipCache) {
                 instance = new options.factory(object, _.clone(parent._options));
             }
             return instance;

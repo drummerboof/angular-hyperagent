@@ -175,7 +175,8 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
 
             this.links = new HyperLazyResource(this, object._links, {
                 factory: Resource.factory(LinkResource),
-                curies: this.curies
+                curies: this.curies,
+                skipCache: true
             });
         }
     };

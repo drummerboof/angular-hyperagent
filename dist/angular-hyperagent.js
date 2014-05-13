@@ -157,7 +157,7 @@ angular.module('hyperagent', []);
         var instance;
 
         return function () {
-            if (instance === undefined) {
+            if (instance === undefined || options.skipCache) {
                 instance = new options.factory(object, _.clone(parent._options));
             }
             return instance;
@@ -165,7 +165,8 @@ angular.module('hyperagent', []);
     };
 
     return LazyResource;
-}]);;angular.module('hyperagent').factory('hyperLoader', ['$q', '$http', function ($q, $http) {
+}]);
+;angular.module('hyperagent').factory('hyperLoader', ['$q', '$http', function ($q, $http) {
 
     function loadAjax (options) {
         var httpOptions = angular.copy(options);
@@ -396,7 +397,8 @@ angular.module('hyperagent', []);
 
             this.links = new HyperLazyResource(this, object._links, {
                 factory: Resource.factory(LinkResource),
-                curies: this.curies
+                curies: this.curies,
+                skipCache: true
             });
         }
     };
