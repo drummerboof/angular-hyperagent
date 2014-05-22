@@ -124,6 +124,15 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
      */
     Resource.prototype.link = function link(rel, params) {
         var _link = this.links[rel];
+
+        if (_.isArray(_link)) {
+            if (_link.length > 1) {
+                throw new Error('Found a link array with more than one item - still need to add support for this');
+            } else {
+                _link = _link[0];
+            }
+        }
+
         if (params) {
             _link.expand(params);
         }

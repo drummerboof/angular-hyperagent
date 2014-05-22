@@ -219,6 +219,20 @@ describe('Resource', function () {
                 expect(orders.props.description).toBe('Some fancy list of orders.');
             });
 
+            it('should allow single links in a rel array', function () {
+                agent._load({ _links: { stuff: [{ href: 'http://example.com/stuff' }] } });
+
+                expect(agent.link('stuff').url()).toBe('http://example.com/stuff')
+            });
+
+            it('should throw an error in a rel array contains more than one links', function () {
+                agent._load({ _links: { stuff: [{ href: 'http://example.com/stuff' }, { href: 'http://example.com/stuff2' }] } });
+
+                expect(function () {
+                    agent.link('stuff');
+                }).toThrowError('Found a link array with more than one item - still need to add support for this');
+            });
+
             describe('Templated Links', function () {
                 it('should expand links', function () {
                     agent._load({ _links: {
