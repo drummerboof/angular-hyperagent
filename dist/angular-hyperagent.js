@@ -305,6 +305,10 @@ angular.module('hyperagent', []);
         }
 
         return hyperLoader(ajaxOptions).then(angular.bind(this, function _ajaxThen(response) {
+            if(response.status === 204){
+                //skip loading for responses that have no body
+                return this;
+            }
             this._load(response.data);
             this.loaded = true;
 
