@@ -70,12 +70,17 @@ angular.module('hyperagent').factory('HyperLazyResource', ['$injector', function
 
     LazyResource.prototype._setLazyArray = function _setLazy(key, array, enumerable) {
         // Define a lazy getter for the resource that contains the array.
+        var cache = null;
         Object.defineProperty(this, key, {
             enumerable: enumerable,
             get: function () {
-                return array.map(angular.bind(this, function (object) {
-                    return this._makeGetter(object)();
-                }));
+                if (cache === null) {
+                    cache = array.map(angular.bind(this, function (object) {
+                        return this._makeGetter(object)();
+                    }));
+                }
+
+                return cache;
             }
         });
     };

@@ -78,6 +78,10 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
         }
 
         return hyperLoader(ajaxOptions).then(angular.bind(this, function _ajaxThen(response) {
+            if(response.status === 204){
+                //skip loading for responses that have no body
+                return this;
+            }
             this._load(response.data);
             this.loaded = true;
 
@@ -124,6 +128,15 @@ angular.module('hyperagent').factory('HyperResource', ['hyperLoader', 'HyperCuri
      */
     Resource.prototype.link = function link(rel, params) {
         var _link = this.links[rel];
+
+        if (_.isArray(_link)) {
+            if (_link.length > 1) {
+                throw new Error('Found a link array with more than one item - still need to add support for this');
+            } else {
+                _link = _link[0];
+            }
+        }
+
         if (params) {
             _link.expand(params);
         }

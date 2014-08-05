@@ -19,6 +19,28 @@ describe('HyperLazyResource', function () {
         expect(lazy.foo.props.bar).toEqual('baz');
     });
 
+    it('should create the same resources for array properties if accessed more times', function () {
+        var lazy = new HyperLazyResource({
+            url: 'https://example.com'
+        }, { foo: [{ num: 1}, {num: 2}]});
+
+        var p1 = lazy.foo,
+            p2 = lazy.foo;
+
+        expect(p1).toBe(p2);
+    });
+
+    it('should create the same resources for object properties if accessed more times', function () {
+        var lazy = new HyperLazyResource({
+            url: 'https://example.com'
+        }, { foo: { value: { num: 1}}});
+
+        var p1 = lazy.foo.value,
+            p2 = lazy.foo.value;
+
+        expect(p1).toBe(p2);
+    });
+
     it('should allow custom factory method', function () {
         var parent = new HyperLazyResource({
             url: 'http://example.com'

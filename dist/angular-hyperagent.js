@@ -141,12 +141,17 @@ angular.module('hyperagent', []);
 
     LazyResource.prototype._setLazyArray = function _setLazy(key, array, enumerable) {
         // Define a lazy getter for the resource that contains the array.
+        var cache = null;
         Object.defineProperty(this, key, {
             enumerable: enumerable,
             get: function () {
-                return array.map(angular.bind(this, function (object) {
-                    return this._makeGetter(object)();
-                }));
+                if (cache === null) {
+                    cache = array.map(angular.bind(this, function (object) {
+                        return this._makeGetter(object)();
+                    }));
+                }
+
+                return cache;
             }
         });
     };
@@ -300,6 +305,10 @@ angular.module('hyperagent', []);
         }
 
         return hyperLoader(ajaxOptions).then(angular.bind(this, function _ajaxThen(response) {
+            if(response.status === 204){
+                //skip loading for responses that have no body
+                return this;
+            }
             this._load(response.data);
             this.loaded = true;
 
@@ -346,6 +355,15 @@ angular.module('hyperagent', []);
      */
     Resource.prototype.link = function link(rel, params) {
         var _link = this.links[rel];
+
+        if (_.isArray(_link)) {
+            if (_link.length > 1) {
+                throw new Error('Found a link array with more than one item - still need to add support for this');
+            } else {
+                _link = _link[0];
+            }
+        }
+
         if (params) {
             _link.expand(params);
         }
