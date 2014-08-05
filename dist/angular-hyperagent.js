@@ -440,9 +440,9 @@ angular.module('hyperagent', []);
     };
 
     Resource.prototype._load = function _load(object) {
-        this._loadHooks.forEach(function (hook) {
-            hook.bind(this)(object);
-        }.bind(this));
+        this._loadHooks.forEach(_.bind(function (hook) {
+            _.bind(hook, this)(object);
+        }, this));
     };
 
     /**
